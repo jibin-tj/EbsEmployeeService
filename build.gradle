@@ -1,0 +1,106 @@
+import io.swagger.codegen.DefaultGenerator
+import io.swagger.codegen.config.CodegenConfigurator
+
+buildscript {
+	ext {
+		springBootVersion = '2.1.1.RELEASE'
+		springfoxVersion = '2.9.2'
+	}
+	repositories {
+		mavenCentral()
+		gradlePluginPortal()
+		jcenter()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('io.swagger.codegen.v3:swagger-codegen:3.0.2')
+	}
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+configurations {
+    generatedCompile
+}
+
+dependencies {
+
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compile("io.springfox:springfox-swagger-ui:${springfoxVersion}")
+    compile("io.springfox:springfox-swagger2:${springfoxVersion}") {
+    	exclude module: 'swagger-annotations'
+    	exclude module: 'swagger-models'
+	}
+	compile("io.swagger:swagger-annotations:1.5.21")
+	compile("io.swagger:swagger-models:1.5.21")
+	compile("javax.activation:activation:1.1.1")
+	
+	generatedCompile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    generatedCompile("io.springfox:springfox-swagger-ui:${springfoxVersion}")
+	generatedCompile("io.springfox:springfox-swagger2:${springfoxVersion}") {
+    	exclude module: 'swagger-annotations'
+    	exclude module: 'swagger-models'
+	}
+	generatedCompile("io.swagger:swagger-annotations:1.5.21")
+	generatedCompile("io.swagger:swagger-models:1.5.21")
+    
+ 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("org.mockito:mockito-junit-jupiter:2.23.0")
+ 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+}
+
+sourceSets {
+    generated {
+        compileClasspath = configurations.generatedCompile
+    }
+    main {
+        compileClasspath += generated.output
+        runtimeClasspath += generated.output
+    }
+
+    test {
+        compileClasspath += generated.output
+        runtimeClasspath += generated.output
+    }
+}
+
+def swaggerSourceFile = 'api/apidoc.json'
+def swaggerTargetFolder = 'src/generated/java'
+
+task generateApi {
+    inputs.file("$projectDir/$swaggerSourceFile")
+    outputs.dir("$projectDir/$swaggerTargetFolder")
+    doLast {
+        def config = new CodegenConfigurator()
+        config.setInputSpec("file:///$projectDir/$swaggerSourceFile")
+        config.setOutputDir("$projectDir")
+        config.setLang('spring')
+        config.setAdditionalProperties([
+                'java8'        : 'true',
+                'dateLibrary'  : 'java8',
+                'interfaceOnly': 'true',
+                'apiPackage'   : 'de.ebs.controller',
+                'modelPackage' : 'de.ebs.model',
+                'sourceFolder' : swaggerTargetFolder
+        ])
+        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+    }
+}
+
+clean.doFirst {
+    delete("${projectDir}/$swaggerTargetFolder")
+}
+compileGeneratedJava.dependsOn generateApi
+

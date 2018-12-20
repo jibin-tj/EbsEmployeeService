@@ -1,0 +1,89 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Employee Service",
+		"description": "Employee Service"
+	},
+	"basePath": "/",
+	"schemes": [
+		"http",
+		"https"
+	],
+	"produces": [
+		"application/json"
+	],
+	"paths": {
+		"/employee": {
+			"get": {
+				"description": "Get",
+				"operationId": "GetEmployee",
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "mgbCode",
+						"in": "query",
+						"description": "Mgb code",
+						"type": "string",
+						"required": false
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Products matching the search parameters",
+						"schema": {
+							"$ref": "#/definitions/EmployeeDTO"
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"401": {
+						"description": "Access is denied due to invalid credentials",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"EmployeeDTO": {
+			"type": "object",
+			"properties": {
+				"empId": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		},
+		"ErrorDTO": {
+			"type": "object",
+			"required": [
+				"code",
+				"message"
+			],
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"message": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
