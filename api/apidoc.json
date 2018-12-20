@@ -92,7 +92,8 @@
 						"in": "query",
 						"description": "companyId of the employee",
 						"type": "integer",
-						"format": "int32"
+						"format": "int32",
+						"required": true
 					}
 				],
 				"responses": {
@@ -136,6 +137,12 @@
 						"type": "integer",
 						"format": "int32",
 						"required": true
+					},
+					{
+						"name": "name",
+						"in": "query",
+						"description": "Name of the employee",
+						"type": "string"
 					},
 					{
 						"name": "surName",

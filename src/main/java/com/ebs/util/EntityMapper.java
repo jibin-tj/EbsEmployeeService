@@ -1,4 +1,4 @@
-package com.ebs;
+package com.ebs.util;
 
 import com.ebs.model.EmployeeDTO;
 import com.ebs.repo.entity.Employee;

@@ -30,7 +30,7 @@ import javax.validation.constraints.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T18:43:45.486+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T19:18:45.230+01:00")
 
 @Api(value = "employees", description = "the employees API")
 public interface EmployeesApi {
@@ -58,7 +58,7 @@ public interface EmployeesApi {
     @RequestMapping(value = "/employees",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    default ResponseEntity<EmployeeDTO> createEmployee(@NotNull @ApiParam(value = "Name of the employee", required = true) @Valid @RequestParam(value = "name", required = true) String name,@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary,@ApiParam(value = "companyId of the employee") @Valid @RequestParam(value = "companyId", required = false) Integer companyId) {
+    default ResponseEntity<EmployeeDTO> createEmployee(@NotNull @ApiParam(value = "Name of the employee", required = true) @Valid @RequestParam(value = "name", required = true) String name,@NotNull @ApiParam(value = "companyId of the employee", required = true) @Valid @RequestParam(value = "companyId", required = true) Integer companyId,@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
@@ -102,7 +102,7 @@ public interface EmployeesApi {
     @RequestMapping(value = "/employees",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)
-    default ResponseEntity<EmployeeDTO> editEmployee(@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id,@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary,@ApiParam(value = "companyId of the employee") @Valid @RequestParam(value = "companyId", required = false) Integer companyId) {
+    default ResponseEntity<EmployeeDTO> editEmployee(@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id,@ApiParam(value = "Name of the employee") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary,@ApiParam(value = "companyId of the employee") @Valid @RequestParam(value = "companyId", required = false) Integer companyId) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {

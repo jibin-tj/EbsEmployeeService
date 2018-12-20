@@ -16,4 +16,7 @@ public interface IEmployeeService {
 
 	public EmployeeDTO createEmplyee(String name, String surName, String email, String address, Integer salary,
 			Integer companyId);
+
+	public EmployeeDTO editEmployee(Integer id, String name, String surName, String email, String address, Integer salary,
+			Integer companyId);
 }

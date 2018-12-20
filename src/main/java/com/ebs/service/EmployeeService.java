@@ -3,24 +3,27 @@ package com.ebs.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ebs.EntityMapper;
+import com.ebs.exception.CompanyNotFound;
+import com.ebs.exception.EmployeeNotFound;
 import com.ebs.model.EmployeeDTO;
 import com.ebs.model.EmployeesResultModel;
+import com.ebs.repo.CompanyRepo;
 import com.ebs.repo.EmployeeRepo;
 import com.ebs.repo.entity.Company;
 import com.ebs.repo.entity.Employee;
+import com.ebs.util.EntityMapper;
 
 @Service
 public class EmployeeService implements IEmployeeService {
 
 	@Autowired
 	EmployeeRepo employeeRepo;
+
+	@Autowired
+	CompanyRepo companyRepo;
 
 	@Override
 	public EmployeesResultModel getAllEmployees() {
@@ -66,17 +69,37 @@ public class EmployeeService implements IEmployeeService {
 		employee.setAddress(address);
 		employee.setEmail(email);
 		employee.setName(name);
+		employee.setSurName(surName);
 		employee.setSalary(salary);
-		
-		employee.setCompany(employeeRepo.findByCompanyId(companyId).getCompany());
-
+		employee.setCompany(getCompany(companyId));
 		employee = employeeRepo.save(employee);
 		return EntityMapper.mapEntityToModel(employee);
 
 	}
-	
+
 	private Company getCompany(Integer companyId) {
-		Employee employee=employeeRepo.findByCompanyId(companyId);
+		return companyRepo.findById(companyId).orElseThrow(() -> new CompanyNotFound("Company Id id invalid"));
+	}
+
+	@Override
+	public EmployeeDTO editEmployee(Integer id, String name, String surName, String email, String address,
+			Integer salary, Integer companyId) {
+
+		Employee employee = employeeRepo.findById(id).orElseThrow(() -> new EmployeeNotFound("Employee Not Found"));
+		if (address != null)
+			employee.setAddress(address);
+		if (email != null)
+			employee.setEmail(email);
+		if (name != null)
+			employee.setName(name);
+		if (surName != null)
+			employee.setSurName(surName);
+		if (salary != null && salary > 0)
+			employee.setSalary(salary);
+		if (companyId != null)
+			employee.setCompany(getCompany(companyId));
+		employee = employeeRepo.save(employee);
+		return EntityMapper.mapEntityToModel(employee);
 	}
 
 }
