@@ -1,4 +1,4 @@
-package de.ebs.model;
+package com.ebs.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * ErrorDTO
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T00:53:27.219+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T18:43:45.486+01:00")
 
 public class ErrorDTO   {
   @JsonProperty("code")

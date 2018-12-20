@@ -14,25 +14,165 @@
 		"application/json"
 	],
 	"paths": {
-		"/employee": {
+		"/employees": {
 			"get": {
 				"description": "Get",
 				"operationId": "GetEmployee",
 				"produces": [
 					"application/json"
 				],
+				"responses": {
+					"200": {
+						"description": "Get all employees",
+						"schema": {
+							"$ref": "#/definitions/EmployeesResultModel"
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"401": {
+						"description": "Access is denied due to invalid credentials",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					}
+				}
+			},
+			"post": {
+				"description": "Create employee",
+				"operationId": "CreateEmployee",
+				"produces": [
+					"application/json"
+				],
 				"parameters": [
 					{
-						"name": "mgbCode",
+						"name": "name",
 						"in": "query",
-						"description": "Mgb code",
+						"description": "Name of the employee",
 						"type": "string",
-						"required": false
+						"required": true
+					},
+					{
+						"name": "surName",
+						"in": "query",
+						"description": "surName of the employee",
+						"type": "string"
+					},
+					{
+						"name": "email",
+						"in": "query",
+						"description": "email of the employee",
+						"type": "string"
+					},
+					{
+						"name": "address",
+						"in": "query",
+						"description": "address of the employee",
+						"type": "string"
+					},
+					{
+						"name": "salary",
+						"in": "query",
+						"description": "salary of the employee",
+						"type": "integer",
+						"format": "int32"
+					},
+					{
+						"name": "companyId",
+						"in": "query",
+						"description": "companyId of the employee",
+						"type": "integer",
+						"format": "int32"
 					}
 				],
 				"responses": {
 					"200": {
-						"description": "Products matching the search parameters",
+						"description": "Employee Created",
+						"schema": {
+							"$ref": "#/definitions/EmployeeDTO"
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"401": {
+						"description": "Access is denied due to invalid credentials",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					}
+				}
+			},
+			"put": {
+				"description": "Edit employee",
+				"operationId": "EditEmployee",
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "Id of the employee",
+						"type": "integer",
+						"format": "int32",
+						"required": true
+					},
+					{
+						"name": "surName",
+						"in": "query",
+						"description": "surName of the employee",
+						"type": "string"
+					},
+					{
+						"name": "email",
+						"in": "query",
+						"description": "email of the employee",
+						"type": "string"
+					},
+					{
+						"name": "address",
+						"in": "query",
+						"description": "address of the employee",
+						"type": "string"
+					},
+					{
+						"name": "salary",
+						"in": "query",
+						"description": "salary of the employee",
+						"type": "integer",
+						"format": "int32"
+					},
+					{
+						"name": "companyId",
+						"in": "query",
+						"description": "companyId of the employee",
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Employee Created",
 						"schema": {
 							"$ref": "#/definitions/EmployeeDTO"
 						}
@@ -57,18 +197,94 @@
 					}
 				}
 			}
+		},
+		"/employees/:id": {
+			"get": {
+				"description": "Get",
+				"operationId": "GetEmployee for id",
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "Id of the employee",
+						"type": "integer",
+						"format": "int32",
+						"required": true
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "GetEmployee for id",
+						"schema": {
+							"$ref": "#/definitions/EmployeesResultModel"
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"401": {
+						"description": "Access is denied due to invalid credentials",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					}
+				}
+			},
+			"delete": {
+				"description": "Delete employee ",
+				"operationId": "DeleteEmployee",
+				"produces": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "Id of the employee",
+						"type": "integer",
+						"format": "int32",
+						"required": true
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Employee deleted"
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"401": {
+						"description": "Access is denied due to invalid credentials",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"schema": {
+							"$ref": "#/definitions/ErrorDTO"
+						}
+					}
+				}
+			}
 		}
 	},
 	"definitions": {
-		"EmployeeDTO": {
-			"type": "object",
-			"properties": {
-				"empId": {
-					"type": "integer",
-					"format": "int32"
-				}
-			}
-		},
 		"ErrorDTO": {
 			"type": "object",
 			"required": [
@@ -82,6 +298,47 @@
 				},
 				"message": {
 					"type": "string"
+				}
+			}
+		},
+		"EmployeesResultModel": {
+			"type": "object",
+			"properties": {
+				"EmployeeDTO": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/EmployeeDTO"
+					}
+				}
+			}
+		},
+		"EmployeeDTO": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"name": {
+					"type": "string"
+				},
+				"surname": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"address": {
+					"type": "string"
+				},
+				"salary": {
+					"type": "integer",
+					"format": "int64",
+					"minimum": 1
+				},
+				"companyId": {
+					"type": "integer",
+					"format": "int32"
 				}
 			}
 		}

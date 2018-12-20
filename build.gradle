@@ -24,7 +24,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 repositories {
-    // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
@@ -45,6 +44,7 @@ dependencies {
 	compile("io.swagger:swagger-annotations:1.5.21")
 	compile("io.swagger:swagger-models:1.5.21")
 	compile("javax.activation:activation:1.1.1")
+	compile("com.h2database:h2")
 	
 	generatedCompile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     generatedCompile("io.springfox:springfox-swagger-ui:${springfoxVersion}")
@@ -91,8 +91,8 @@ task generateApi {
                 'java8'        : 'true',
                 'dateLibrary'  : 'java8',
                 'interfaceOnly': 'true',
-                'apiPackage'   : 'de.ebs.controller',
-                'modelPackage' : 'de.ebs.model',
+                'apiPackage'   : 'com.ebs.controller',
+                'modelPackage' : 'com.ebs.model',
                 'sourceFolder' : swaggerTargetFolder
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
@@ -102,5 +102,11 @@ task generateApi {
 clean.doFirst {
     delete("${projectDir}/$swaggerTargetFolder")
 }
+
+bootRun {
+    classpath += sourceSets.generated.output
+}
 compileGeneratedJava.dependsOn generateApi
+compileJava.dependsOn compileGeneratedJava
+classes.dependsOn generatedClasses
 
