@@ -61,6 +61,7 @@ public class EmployeeService implements IEmployeeService {
 			employee.setSurName(empReqModel.getSurname());
 			employee.setSalary(empReqModel.getSalary());
 			employee.setCompany(getCompany(empReqModel.getCompanyId()));
+			employeeRepo.save(employee);
 			return EntityMapper.mapEntityToModel(employee);
 		} else {
 			throw new InvalidRequest("Invalid Request");

@@ -34,8 +34,8 @@
 							"$ref": "#/definitions/ErrorDTO"
 						}
 					},
-					"401": {
-						"description": "Access is denied due to invalid credentials",
+					"404": {
+						"description": "Not found",
 						"schema": {
 							"$ref": "#/definitions/ErrorDTO"
 						}
@@ -66,7 +66,7 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"201": {
 						"description": "Employee Created",
 						"schema": {
 							"$ref": "#/definitions/EmployeeDTO"
@@ -78,8 +78,8 @@
 							"$ref": "#/definitions/ErrorDTO"
 						}
 					},
-					"401": {
-						"description": "Access is denied due to invalid credentials",
+					"404": {
+						"description": "Not found",
 						"schema": {
 							"$ref": "#/definitions/ErrorDTO"
 						}
@@ -122,8 +122,8 @@
 							"$ref": "#/definitions/ErrorDTO"
 						}
 					},
-					"401": {
-						"description": "Access is denied due to invalid credentials",
+					"404": {
+						"description": "Not found",
 						"schema": {
 							"$ref": "#/definitions/ErrorDTO"
 						}
@@ -167,12 +167,6 @@
 							"$ref": "#/definitions/ErrorDTO"
 						}
 					},
-					"401": {
-						"description": "Access is denied due to invalid credentials",
-						"schema": {
-							"$ref": "#/definitions/ErrorDTO"
-						}
-					},
 					"500": {
 						"description": "Internal Server Error",
 						"schema": {
@@ -198,17 +192,11 @@
 					}
 				],
 				"responses": {
-					"200": {
+					"204": {
 						"description": "Employee deleted"
 					},
 					"400": {
 						"description": "Bad Request",
-						"schema": {
-							"$ref": "#/definitions/ErrorDTO"
-						}
-					},
-					"401": {
-						"description": "Access is denied due to invalid credentials",
 						"schema": {
 							"$ref": "#/definitions/ErrorDTO"
 						}

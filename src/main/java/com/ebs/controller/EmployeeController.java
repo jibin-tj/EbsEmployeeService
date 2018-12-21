@@ -36,7 +36,7 @@ public class EmployeeController implements EmployeesApi {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Get all employees", response = EmployeesResultModel.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+			@ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees", produces = { "application/json" }, method = RequestMethod.GET)
 	@Override
@@ -48,7 +48,6 @@ public class EmployeeController implements EmployeesApi {
 	@ApiOperation(value = "", nickname = "getEmployeeById", notes = "Get", response = EmployeeDTO.class, tags = {})
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeeDTO.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees/:id", produces = { "application/json" }, method = RequestMethod.GET)
 	@Override
@@ -58,11 +57,9 @@ public class EmployeeController implements EmployeesApi {
 		return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "", nickname = "deleteEmployee", notes = "Delete employee", response = EmployeesResultModel.class, tags = {})
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeesResultModel.class),
+	@ApiOperation(value = "", nickname = "deleteEmployee", notes = "Delete employee ", tags = {})
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Employee deleted"),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees/:id", produces = { "application/json" }, method = RequestMethod.DELETE)
 	@Override
@@ -73,9 +70,9 @@ public class EmployeeController implements EmployeesApi {
 	}
 
 	@ApiOperation(value = "", nickname = "createEmployee", notes = "Create employee", response = EmployeeDTO.class, tags = {})
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Employee Created", response = EmployeeDTO.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+			@ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees", produces = { "application/json" }, method = RequestMethod.POST)
 	@Override
@@ -87,7 +84,7 @@ public class EmployeeController implements EmployeesApi {
 	@ApiOperation(value = "", nickname = "updateEmployee", notes = "Update employee", response = EmployeeDTO.class, tags = {})
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+			@ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees", produces = { "application/json" }, method = RequestMethod.PUT)
 	@Override

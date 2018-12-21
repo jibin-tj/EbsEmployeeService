@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * EmployeeDTO
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-21T01:53:27.486+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-21T14:18:32.769+01:00")
 
 public class EmployeeDTO   {
   @JsonProperty("id")

@@ -31,7 +31,7 @@ import javax.validation.constraints.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-21T01:53:27.486+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-21T14:18:32.769+01:00")
 
 @Api(value = "employees", description = "the employees API")
 public interface EmployeesApi {
@@ -52,9 +52,9 @@ public interface EmployeesApi {
 
     @ApiOperation(value = "", nickname = "createEmployee", notes = "Create employee", response = EmployeeDTO.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
+        @ApiResponse(code = 201, message = "Employee Created", response = EmployeeDTO.class),
         @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+        @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
     @RequestMapping(value = "/employees",
         produces = { "application/json" }, 
@@ -78,9 +78,8 @@ public interface EmployeesApi {
 
     @ApiOperation(value = "", nickname = "deleteEmployee", notes = "Delete employee ", tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Employee deleted"),
+        @ApiResponse(code = 204, message = "Employee deleted"),
         @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
     @RequestMapping(value = "/employees/:id",
         produces = { "application/json" }, 
@@ -98,7 +97,7 @@ public interface EmployeesApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Get all employees", response = EmployeesResultModel.class),
         @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+        @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
     @RequestMapping(value = "/employees",
         produces = { "application/json" }, 
@@ -124,7 +123,6 @@ public interface EmployeesApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeeDTO.class),
         @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
     @RequestMapping(value = "/employees/:id",
         produces = { "application/json" }, 
@@ -150,7 +148,7 @@ public interface EmployeesApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
         @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+        @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
     @RequestMapping(value = "/employees",
         produces = { "application/json" }, 
