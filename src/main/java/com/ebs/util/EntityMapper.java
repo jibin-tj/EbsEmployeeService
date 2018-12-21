@@ -12,7 +12,7 @@ public class EntityMapper {
 		dto.setEmail(employeeEntity.getEmail());
 		dto.setName(employeeEntity.getName());
 		dto.setSurname(employeeEntity.getSurName());
-		dto.setSalary(Long.valueOf(employeeEntity.getSalary()));
+		dto.setSalary(employeeEntity.getSalary());
 		dto.setCompanyId(employeeEntity.getCompany().getId());
 		return dto;
 	}

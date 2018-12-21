@@ -6,6 +6,7 @@
 package com.ebs.controller;
 
 import com.ebs.model.EmployeeDTO;
+import com.ebs.model.EmployeeRequestModel;
 import com.ebs.model.EmployeesResultModel;
 import com.ebs.model.ErrorDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +31,7 @@ import javax.validation.constraints.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T19:18:45.230+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-21T01:53:27.486+01:00")
 
 @Api(value = "employees", description = "the employees API")
 public interface EmployeesApi {
@@ -58,7 +59,7 @@ public interface EmployeesApi {
     @RequestMapping(value = "/employees",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    default ResponseEntity<EmployeeDTO> createEmployee(@NotNull @ApiParam(value = "Name of the employee", required = true) @Valid @RequestParam(value = "name", required = true) String name,@NotNull @ApiParam(value = "companyId of the employee", required = true) @Valid @RequestParam(value = "companyId", required = true) Integer companyId,@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary) {
+    default ResponseEntity<EmployeeDTO> createEmployee(@ApiParam(value = "The employee details" ,required=true )  @Valid @RequestBody EmployeeRequestModel employee) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
@@ -93,32 +94,6 @@ public interface EmployeesApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "editEmployee", notes = "Edit employee", response = EmployeeDTO.class, tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
-        @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
-        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
-        @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
-    @RequestMapping(value = "/employees",
-        produces = { "application/json" }, 
-        method = RequestMethod.PUT)
-    default ResponseEntity<EmployeeDTO> editEmployee(@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id,@ApiParam(value = "Name of the employee") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary,@ApiParam(value = "companyId of the employee") @Valid @RequestParam(value = "companyId", required = false) Integer companyId) {
-        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
-            if (getAcceptHeader().get().contains("application/json")) {
-                try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"companyId\" : 1,  \"address\" : \"address\",  \"surname\" : \"surname\",  \"name\" : \"name\",  \"id\" : 0,  \"salary\" : 1,  \"email\" : \"email\"}", EmployeeDTO.class), HttpStatus.NOT_IMPLEMENTED);
-                } catch (IOException e) {
-                    log.error("Couldn't serialize response for content type application/json", e);
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            }
-        } else {
-            log.warn("ObjectMapper or HttpServletRequest not configured in default EmployeesApi interface so no example is generated");
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-
     @ApiOperation(value = "", nickname = "getEmployee", notes = "Get", response = EmployeesResultModel.class, tags={  })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Get all employees", response = EmployeesResultModel.class),
@@ -145,20 +120,46 @@ public interface EmployeesApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "getEmployeeForId", notes = "Get", response = EmployeesResultModel.class, tags={  })
+    @ApiOperation(value = "", nickname = "getEmployeeById", notes = "Get", response = EmployeeDTO.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeesResultModel.class),
+        @ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeeDTO.class),
         @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
         @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
         @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
     @RequestMapping(value = "/employees/:id",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<EmployeesResultModel> getEmployeeForId(@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
+    default ResponseEntity<EmployeeDTO> getEmployeeById(@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"EmployeeDTO\" : [ {    \"companyId\" : 1,    \"address\" : \"address\",    \"surname\" : \"surname\",    \"name\" : \"name\",    \"id\" : 0,    \"salary\" : 1,    \"email\" : \"email\"  }, {    \"companyId\" : 1,    \"address\" : \"address\",    \"surname\" : \"surname\",    \"name\" : \"name\",    \"id\" : 0,    \"salary\" : 1,    \"email\" : \"email\"  } ]}", EmployeesResultModel.class), HttpStatus.NOT_IMPLEMENTED);
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"companyId\" : 1,  \"address\" : \"address\",  \"surname\" : \"surname\",  \"name\" : \"name\",  \"id\" : 0,  \"salary\" : 1,  \"email\" : \"email\"}", EmployeeDTO.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default EmployeesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+
+    @ApiOperation(value = "", nickname = "updateEmployee", notes = "Update employee", response = EmployeeDTO.class, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
+        @ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
+        @ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
+        @ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
+    @RequestMapping(value = "/employees",
+        produces = { "application/json" }, 
+        method = RequestMethod.PUT)
+    default ResponseEntity<EmployeeDTO> updateEmployee(@ApiParam(value = "The employee details" ,required=true )  @Valid @RequestBody EmployeeDTO employee) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"companyId\" : 1,  \"address\" : \"address\",  \"surname\" : \"surname\",  \"name\" : \"name\",  \"id\" : 0,  \"salary\" : 1,  \"email\" : \"email\"}", EmployeeDTO.class), HttpStatus.NOT_IMPLEMENTED);
                 } catch (IOException e) {
                     log.error("Couldn't serialize response for content type application/json", e);
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

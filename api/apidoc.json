@@ -2,8 +2,8 @@
 	"swagger": "2.0",
 	"info": {
 		"version": "1.0.0",
-		"title": "Employee Service",
-		"description": "Employee Service"
+		"title": "Ebs",
+		"description": "Employee Service for Ebs"
 	},
 	"basePath": "/",
 	"schemes": [
@@ -56,44 +56,13 @@
 				],
 				"parameters": [
 					{
-						"name": "name",
-						"in": "query",
-						"description": "Name of the employee",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "surName",
-						"in": "query",
-						"description": "surName of the employee",
-						"type": "string"
-					},
-					{
-						"name": "email",
-						"in": "query",
-						"description": "email of the employee",
-						"type": "string"
-					},
-					{
-						"name": "address",
-						"in": "query",
-						"description": "address of the employee",
-						"type": "string"
-					},
-					{
-						"name": "salary",
-						"in": "query",
-						"description": "salary of the employee",
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "companyId",
-						"in": "query",
-						"description": "companyId of the employee",
-						"type": "integer",
-						"format": "int32",
-						"required": true
+						"in": "body",
+						"name": "Employee",
+						"description": "The employee details",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/EmployeeRequestModel"
+						}
 					}
 				],
 				"responses": {
@@ -124,57 +93,20 @@
 				}
 			},
 			"put": {
-				"description": "Edit employee",
-				"operationId": "EditEmployee",
+				"description": "Update employee",
+				"operationId": "UpdateEmployee",
 				"produces": [
 					"application/json"
 				],
 				"parameters": [
 					{
-						"name": "id",
-						"in": "query",
-						"description": "Id of the employee",
-						"type": "integer",
-						"format": "int32",
-						"required": true
-					},
-					{
-						"name": "name",
-						"in": "query",
-						"description": "Name of the employee",
-						"type": "string"
-					},
-					{
-						"name": "surName",
-						"in": "query",
-						"description": "surName of the employee",
-						"type": "string"
-					},
-					{
-						"name": "email",
-						"in": "query",
-						"description": "email of the employee",
-						"type": "string"
-					},
-					{
-						"name": "address",
-						"in": "query",
-						"description": "address of the employee",
-						"type": "string"
-					},
-					{
-						"name": "salary",
-						"in": "query",
-						"description": "salary of the employee",
-						"type": "integer",
-						"format": "int32"
-					},
-					{
-						"name": "companyId",
-						"in": "query",
-						"description": "companyId of the employee",
-						"type": "integer",
-						"format": "int32"
+						"in": "body",
+						"name": "Employee",
+						"description": "The employee details",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/EmployeeDTO"
+						}
 					}
 				],
 				"responses": {
@@ -208,7 +140,7 @@
 		"/employees/:id": {
 			"get": {
 				"description": "Get",
-				"operationId": "GetEmployee for id",
+				"operationId": "GetEmployee by id",
 				"produces": [
 					"application/json"
 				],
@@ -226,7 +158,7 @@
 					"200": {
 						"description": "GetEmployee for id",
 						"schema": {
-							"$ref": "#/definitions/EmployeesResultModel"
+							"$ref": "#/definitions/EmployeeDTO"
 						}
 					},
 					"400": {
@@ -340,7 +272,33 @@
 				},
 				"salary": {
 					"type": "integer",
-					"format": "int64",
+					"format": "int32",
+					"minimum": 1
+				},
+				"companyId": {
+					"type": "integer",
+					"format": "int32"
+				}
+			}
+		},
+		"EmployeeRequestModel": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"surname": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"address": {
+					"type": "string"
+				},
+				"salary": {
+					"type": "integer",
+					"format": "int32",
 					"minimum": 1
 				},
 				"companyId": {

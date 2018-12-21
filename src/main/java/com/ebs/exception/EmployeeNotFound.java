@@ -8,4 +8,8 @@ public class EmployeeNotFound extends RuntimeException {
 	public EmployeeNotFound(final String message) {
 		super(message);
 	}
+
+	public EmployeeNotFound() {
+		super();
+	}
 }

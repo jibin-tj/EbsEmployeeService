@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.ebs.exception.CompanyNotFound;
 import com.ebs.exception.EmployeeNotFound;
+import com.ebs.exception.InvalidRequest;
 import com.ebs.model.EmployeeDTO;
+import com.ebs.model.EmployeeRequestModel;
 import com.ebs.model.EmployeesResultModel;
 import com.ebs.repo.CompanyRepo;
 import com.ebs.repo.EmployeeRepo;
@@ -28,12 +30,8 @@ public class EmployeeService implements IEmployeeService {
 	@Override
 	public EmployeesResultModel getAllEmployees() {
 
-		List<EmployeeDTO> dtos = employeeRepo.findAll().stream().map(employeeEntity -> {
-			EmployeeDTO dto = EntityMapper.mapEntityToModel(employeeEntity);
-			return dto;
-		}).collect(Collectors.toList());
-
-		System.out.println(dtos);
+		List<EmployeeDTO> dtos = employeeRepo.findAll().stream().map(EntityMapper::mapEntityToModel)
+				.collect(Collectors.toList());
 
 		EmployeesResultModel employeesResultModel = new EmployeesResultModel();
 		employeesResultModel.setEmployeeDTO(dtos);
@@ -42,19 +40,10 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public EmployeesResultModel getEmployee(Integer id) {
+	public EmployeeDTO getEmployee(Integer id) {
 
-		List<EmployeeDTO> dtos = employeeRepo.findById(id).stream().map(employeeEntity -> {
-			EmployeeDTO dto = EntityMapper.mapEntityToModel(employeeEntity);
-			return dto;
-		}).collect(Collectors.toList());
-
-		System.out.println(dtos);
-
-		EmployeesResultModel employeesResultModel = new EmployeesResultModel();
-		employeesResultModel.setEmployeeDTO(dtos);
-
-		return employeesResultModel;
+		return employeeRepo.findById(id).map(EntityMapper::mapEntityToModel)
+				.orElseThrow(() -> new EmployeeNotFound("Employee not found"));
 	}
 
 	@Override
@@ -63,17 +52,19 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public EmployeeDTO createEmplyee(String name, String surName, String email, String address, Integer salary,
-			Integer companyId) {
-		Employee employee = new Employee();
-		employee.setAddress(address);
-		employee.setEmail(email);
-		employee.setName(name);
-		employee.setSurName(surName);
-		employee.setSalary(salary);
-		employee.setCompany(getCompany(companyId));
-		employee = employeeRepo.save(employee);
-		return EntityMapper.mapEntityToModel(employee);
+	public EmployeeDTO createEmplyee(EmployeeRequestModel empReqModel) {
+		if (empReqModel != null) {
+			Employee employee = new Employee();
+			employee.setAddress(empReqModel.getAddress());
+			employee.setEmail(empReqModel.getEmail());
+			employee.setName(empReqModel.getName());
+			employee.setSurName(empReqModel.getSurname());
+			employee.setSalary(empReqModel.getSalary());
+			employee.setCompany(getCompany(empReqModel.getCompanyId()));
+			return EntityMapper.mapEntityToModel(employee);
+		} else {
+			throw new InvalidRequest("Invalid Request");
+		}
 
 	}
 
@@ -82,22 +73,20 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public EmployeeDTO editEmployee(Integer id, String name, String surName, String email, String address,
-			Integer salary, Integer companyId) {
+	public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
 
-		Employee employee = employeeRepo.findById(id).orElseThrow(() -> new EmployeeNotFound("Employee Not Found"));
-		if (address != null)
-			employee.setAddress(address);
-		if (email != null)
-			employee.setEmail(email);
-		if (name != null)
-			employee.setName(name);
-		if (surName != null)
-			employee.setSurName(surName);
-		if (salary != null && salary > 0)
-			employee.setSalary(salary);
-		if (companyId != null)
-			employee.setCompany(getCompany(companyId));
+		if (employeeDTO.getId() == null) {
+			throw new InvalidRequest("Id cannot be null for updating employee details");
+		}
+		Employee employee = employeeRepo.findById(employeeDTO.getId())
+				.orElseThrow(() -> new EmployeeNotFound("Employee Not Found"));
+		employee.setAddress(employeeDTO.getAddress());
+		employee.setEmail(employeeDTO.getEmail());
+		employee.setName(employeeDTO.getName());
+		employee.setSurName(employeeDTO.getSurname());
+		employee.setSalary(employeeDTO.getSalary());
+		if (employeeDTO.getCompanyId() != null)
+			employee.setCompany(getCompany(employeeDTO.getCompanyId()));
 		employee = employeeRepo.save(employee);
 		return EntityMapper.mapEntityToModel(employee);
 	}

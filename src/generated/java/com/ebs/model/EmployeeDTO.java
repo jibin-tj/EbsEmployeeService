@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * EmployeeDTO
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-20T19:18:45.230+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-12-21T01:53:27.486+01:00")
 
 public class EmployeeDTO   {
   @JsonProperty("id")
@@ -32,7 +32,7 @@ public class EmployeeDTO   {
   private String address = null;
 
   @JsonProperty("salary")
-  private Long salary = null;
+  private Integer salary = null;
 
   @JsonProperty("companyId")
   private Integer companyId = null;
@@ -137,7 +137,7 @@ public class EmployeeDTO   {
     this.address = address;
   }
 
-  public EmployeeDTO salary(Long salary) {
+  public EmployeeDTO salary(Integer salary) {
     this.salary = salary;
     return this;
   }
@@ -150,11 +150,11 @@ public class EmployeeDTO   {
   @ApiModelProperty(value = "")
 
 @Min(1)
-  public Long getSalary() {
+  public Integer getSalary() {
     return salary;
   }
 
-  public void setSalary(Long salary) {
+  public void setSalary(Integer salary) {
     this.salary = salary;
   }
 

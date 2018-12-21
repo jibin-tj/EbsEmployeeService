@@ -1,6 +1,7 @@
 package com.ebs.service;
 
 import com.ebs.model.EmployeeDTO;
+import com.ebs.model.EmployeeRequestModel;
 import com.ebs.model.EmployeesResultModel;
 
 /**
@@ -10,13 +11,11 @@ import com.ebs.model.EmployeesResultModel;
 public interface IEmployeeService {
 	public EmployeesResultModel getAllEmployees();
 
-	public EmployeesResultModel getEmployee(Integer id);
+	public EmployeeDTO getEmployee(Integer id);
 
 	public void deleteEmployee(Integer id);
 
-	public EmployeeDTO createEmplyee(String name, String surName, String email, String address, Integer salary,
-			Integer companyId);
+	public EmployeeDTO createEmplyee(EmployeeRequestModel empReqModel);
 
-	public EmployeeDTO editEmployee(Integer id, String name, String surName, String email, String address, Integer salary,
-			Integer companyId);
+	public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO);
 }

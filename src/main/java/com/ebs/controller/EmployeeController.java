@@ -1,7 +1,5 @@
 package com.ebs.controller;
 
-import java.io.IOException;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -10,12 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ebs.model.EmployeeDTO;
+import com.ebs.model.EmployeeRequestModel;
 import com.ebs.model.EmployeesResultModel;
 import com.ebs.model.ErrorDTO;
 
@@ -45,16 +45,15 @@ public class EmployeeController implements EmployeesApi {
 		return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "", nickname = "getEmployeeForId", notes = "Get", response = EmployeesResultModel.class, tags = {})
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeesResultModel.class),
+	@ApiOperation(value = "", nickname = "getEmployeeById", notes = "Get", response = EmployeeDTO.class, tags = {})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "GetEmployee for id", response = EmployeeDTO.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
 			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees/:id", produces = { "application/json" }, method = RequestMethod.GET)
 	@Override
-	public ResponseEntity<EmployeesResultModel> getEmployeeForId(
-			@Valid @RequestParam(value = "id", required = true) Integer id) {
+	public ResponseEntity<EmployeeDTO> getEmployeeById(
+			@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
 
 		return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
 	}
@@ -73,6 +72,7 @@ public class EmployeeController implements EmployeesApi {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+	@ApiOperation(value = "", nickname = "createEmployee", notes = "Create employee", response = EmployeeDTO.class, tags = {})
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
 			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
@@ -80,34 +80,20 @@ public class EmployeeController implements EmployeesApi {
 	@RequestMapping(value = "/employees", produces = { "application/json" }, method = RequestMethod.POST)
 	@Override
 	public ResponseEntity<EmployeeDTO> createEmployee(
-			@NotNull @ApiParam(value = "Name of the employee", required = true) @Valid @RequestParam(value = "name", required = true) String name,
-			@NotNull @ApiParam(value = "companyId of the employee", required = true) @Valid @RequestParam(value = "companyId", required = true) Integer companyId,
-			@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,
-			@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,
-			@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,
-			@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = true) Integer salary) {
-		return new ResponseEntity<>(employeeService.createEmplyee(name, surName, email, address, salary, companyId),
-				HttpStatus.OK);
+			@ApiParam(value = "The employee details", required = true) @Valid @RequestBody EmployeeRequestModel employee) {
+		return new ResponseEntity<>(employeeService.createEmplyee(employee), HttpStatus.CREATED);
 	}
 
-	@ApiOperation(value = "", nickname = "editEmployee", notes = "Edit employee", response = EmployeeDTO.class, tags = {})
+	@ApiOperation(value = "", nickname = "updateEmployee", notes = "Update employee", response = EmployeeDTO.class, tags = {})
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Employee Created", response = EmployeeDTO.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ErrorDTO.class),
 			@ApiResponse(code = 401, message = "Access is denied due to invalid credentials", response = ErrorDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ErrorDTO.class) })
 	@RequestMapping(value = "/employees", produces = { "application/json" }, method = RequestMethod.PUT)
 	@Override
-	public ResponseEntity<EmployeeDTO> editEmployee(
-			@NotNull @ApiParam(value = "Id of the employee", required = true) @Valid @RequestParam(value = "id", required = true) Integer id,
-			@ApiParam(value = "Name of the employee") @Valid @RequestParam(value = "name", required = false) String name,
-			@ApiParam(value = "surName of the employee") @Valid @RequestParam(value = "surName", required = false) String surName,
-			@ApiParam(value = "email of the employee") @Valid @RequestParam(value = "email", required = false) String email,
-			@ApiParam(value = "address of the employee") @Valid @RequestParam(value = "address", required = false) String address,
-			@ApiParam(value = "salary of the employee") @Valid @RequestParam(value = "salary", required = false) Integer salary,
-			@ApiParam(value = "companyId of the employee") @Valid @RequestParam(value = "companyId", required = false) Integer companyId) {
-
-		return new ResponseEntity<>(employeeService.editEmployee(id,name, surName, email, address, salary, companyId),
-				HttpStatus.OK);
+	public ResponseEntity<EmployeeDTO> updateEmployee(
+			@ApiParam(value = "The employee details", required = true) @Valid @RequestBody EmployeeDTO employee) {
+		return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
 	}
 
 }
